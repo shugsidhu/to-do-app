@@ -29,10 +29,10 @@ addToDoForm.addEventListener('submit', event => {
   //empty the input
   newToDoText.value = '';
 
-  //delete li
-  toDoList.removeChild(newLi);
-
   });
+addToDoForm.addEventListener('Delete', event => {
+  event.preventDefault();
+});
 }
 
 window.onload=function() {
