@@ -41,16 +41,31 @@ function onReady(){
 
 function onReady() {
   let toDos = [];
+  let id= 0;
   const addToDoForm = document.getElementById('addToDoForm');
   const newToDoText = document.getElementById('newToDoText');
   const toDoList = document.getElementById('toDoList');
 
+  let deleteButton = document.createElement('button')
+  deleteButton.innerHTML = 'button';
+  deleteButton.textContent = 'Remove';
+
+  localStorage.getItem(function() {
+    if(value===null){
+      return;
+    }
+    toDos=JSON.parse(array);
+  });
+
 function createNewToDo () {
   if(!newToDoText.value) { return; }
+
+  id++;
 
   toDos.push({
     title: newToDoText.value,
     complete:false
+    id: id
   });
 
    newToDoText.value = '';
@@ -68,20 +83,44 @@ function createNewToDo () {
       const checkbox = document.createElement('input');
       checkbox.type = "checkbox";
 
-      newLi.textContent = toDo.title;
+      let deleteButton = document.createElement('button')
+      deleteButton.innerHTML = 'button';
+      deleteButton.textContent = 'Remove';
 
+      newLi.textContent = toDo.title;
       toDoList.appendChild(newLi);
       newLi.appendChild(checkbox);
+
+      newLi.appendChild(deleteButton);
+
+      deleteButton.addEventListener('click', event => {
+        toDos = toDos.filter(function(el){
+          return el.id !== toDo.id;
+        });
+        renderTheUI();
+        localStorage.setItem('array',(JSON.stringify(toDos)));
     });
-  }
+
+      checkbox.addEventListener('CheckboxStateChange', event => {
+        if(checkbox.checked === 'false') {
+          toDo.complete = false;
+        }
+        else(checkbox.checked === 'true') {
+          toDo.complete = true;
+        }
+        return(toDos);
+        localStorage.setItem('array',(JSON.stringify(toDos)));
+});
+
 
   addToDoForm.addEventListener('submit', event => {
     event.preventDefault();
     createNewToDo();
-    newToDoText.value = '';
+    localStorage.setItem('array', (JSON.stringify(toDos)));
   });
+};
   renderTheUI();
- }
+}
 
 window.onload = function() {
   onReady();
