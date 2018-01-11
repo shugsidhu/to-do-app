@@ -64,8 +64,8 @@ function createNewToDo () {
 
   toDos.push({
     title: newToDoText.value,
-    complete:false
-    id: id
+    complete:false,
+    id: id,
   });
 
    newToDoText.value = '';
@@ -105,7 +105,7 @@ function createNewToDo () {
         if(checkbox.checked === 'false') {
           toDo.complete = false;
         }
-        else(checkbox.checked === 'true') {
+        else if (checkbox.checked === 'true') {
           toDo.complete = true;
         }
         return(toDos);
@@ -118,10 +118,11 @@ function createNewToDo () {
     createNewToDo();
     localStorage.setItem('array', (JSON.stringify(toDos)));
   });
-};
+});
   renderTheUI();
 }
 
 window.onload = function() {
   onReady();
+}
 };
