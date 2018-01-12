@@ -6,7 +6,7 @@ function onReady(){
   addToDoForm.addEventListener('submit', event => {
     event.preventDefault();
 
-    //get the next
+    
     let title = newToDoText.value;
 
     //create a new li
