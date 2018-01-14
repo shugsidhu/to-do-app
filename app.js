@@ -1,64 +1,39 @@
-function onReady(){
-  const addToDoForm = document.getElementById('addToDoForm');
-  const newToDoText = document.getElementById('newToDoText');
-  const toDoList = document.getElementById('toDoList');
-
-  addToDoForm.addEventListener('submit', event => {
-    event.preventDefault();
-
-    let title = newToDoText.value;
-    let newLi = document.createElement('li');
-    let checkbox = document.createElement('input');
-    let deleteButton = document.createElement('button');
-    deleteButton.type = 'delete';
-    checkbox.type="checkbox";
-    newLi.textContent = title;
-    newLi.appendChild(checkbox);
-    newLi.appendChild(deleteButton);
-    toDoList.appendChild(newLi);
-    newToDoText.value = '';
-    deleteButton.addEventListener("click", event => {
-      event.preventDefault();
-      newLi.remove();
-    });
-  });
-}
 
 function onReady() {
-  let toDos = [];
-  const addToDoForm = document.getElementById('addToDoForm');
+  var toDos = [];
+  const addTodoForm = document.getElementById('addToDoForm');
   let id = 0;
 
-  let deleteButton = document.createElement('button')
-  deleteButton.type= "button";
-  deleteButton.textContent = "Remove";
+  let removeItem = document.createElement('button')
+  removeItem.type = "button";
+  removeItem.textContent = "Remove";
 
   localStorage.getItem(function() {
-    if(value===null){
+    if (value === null) {
       return;
     }
-    toDos=JSON.parse(array);
+    toDos = JSON.parse(array);
   });
 
-function createNewToDo () {
-  const newToDoText = document.getElementById('newToDoText');
 
-  if(!newToDoText.value) { return; }
+  function createNewToDo() {
+    const newToDoText = document.getElementById('newToDoText');
 
-  id++;
+    if (!newToDoText.value) { return; }
 
-  toDos.push({
-    title: newToDoText.value,
-    complete:false,
-    id: id,
-  });
+    id++;
 
-   newToDoText.value = '';
+    toDos.push({
+      title: newToDoText.value,
+      complete: false,
+      id: id
+    });
+    newToDoText.value = '';
 
-   renderTheUI();
- }
+    renderTheUI();
+  }
 
-  function renderTheUI(){
+  function renderTheUI() {
     const toDoList = document.getElementById('toDoList');
 
     toDoList.textContent = '';
@@ -68,46 +43,49 @@ function createNewToDo () {
       const checkbox = document.createElement('input');
       checkbox.type = "checkbox";
 
-      let deleteButton = document.createElement('button')
-      deleteButton.type = "button";
-      deleteButton.textContent = "Remove";
+      let removeItem = document.createElement('button')
+      removeItem.type = "button";
+      removeItem.textContent = "Remove";
 
       newLi.textContent = toDo.title;
       toDoList.appendChild(newLi);
       newLi.appendChild(checkbox);
 
-      newLi.appendChild(deleteButton);
+      newLi.appendChild(removeItem);
 
-      deleteButton.addEventListener('click', event => {
-        toDos = toDos.filter(function(el){
-          return el.id !== toDo.id;
+      removeItem.addEventListener('click', event => {
+        toDos = toDos.filter(function(el) {
+         return el.id !== toDo.id;
         });
         renderTheUI();
         localStorage.setItem('array',(JSON.stringify(toDos)));
-    });
+      });
 
       checkbox.addEventListener('CheckboxStateChange', event => {
-        if(checkbox.checked === 'false') {
+        if (checkbox.checked === 'false') {
           toDo.complete = false;
         }
         else if (checkbox.checked === 'true') {
           toDo.complete = true;
         }
-        return(toDos);
+        console.log(toDos);
         localStorage.setItem('array',(JSON.stringify(toDos)));
-});
+      });
+
+    });
+
+    addToDoForm.addEventListener('submit', event =>{
+      event.preventDefault();
+      createNewToDo();
+      localStorage.setItem('array',(JSON.stringify(toDos)));
+    });
+  };
 
 
-  addToDoForm.addEventListener('submit', event => {
-    event.preventDefault();
-    createNewToDo();
-    localStorage.setItem('array', (JSON.stringify(toDos)));
-  });
-});
   renderTheUI();
 }
 
+
 window.onload = function() {
   onReady();
-}
 };
